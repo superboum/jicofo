@@ -52,41 +52,30 @@ interface XmppConnectionConfig {
 
 class XmppServiceConnectionConfig : XmppConnectionConfig {
     override val enabled: Boolean by config {
-        // If the legacy host is set to anything, the connection is enabled.
-        "org.jitsi.jicofo.BRIDGE_MUC_XMPP_HOST".from(legacyConfig).convertFrom<String> { true }
         "jicofo.xmpp.service.enabled".from(newConfig)
     }
 
     override val hostname: String by config {
-        "org.jitsi.jicofo.BRIDGE_MUC_XMPP_HOST".from(legacyConfig)
         "jicofo.xmpp.service.hostname".from(newConfig)
     }
 
     override val port: Int by config {
-        "org.jitsi.jicofo.BRIDGE_MUC_XMPP_PORT".from(legacyConfig)
         "jicofo.xmpp.service.port".from(newConfig)
     }
 
     override val domain: DomainBareJid by config {
-        "org.jitsi.jicofo.BRIDGE_MUC_XMPP_USER_DOMAIN".from(legacyConfig).convertFrom<String> {
-            JidCreate.domainBareFrom(it)
-        }
         "jicofo.xmpp.service.domain".from(newConfig).convertFrom<String> {
             JidCreate.domainBareFrom(it)
         }
     }
 
     override val username: Resourcepart by config {
-        "org.jitsi.jicofo.BRIDGE_MUC_XMPP_USER".from(legacyConfig).convertFrom<String> {
-            Resourcepart.from(it)
-        }
         "jicofo.xmpp.service.username".from(newConfig).convertFrom<String> {
             Resourcepart.from(it)
         }
     }
 
     override val password: String? by optionalconfig {
-        "org.jitsi.jicofo.BRIDGE_MUC_XMPP_USER_PASS".from(legacyConfig)
         "jicofo.xmpp.service.password".from(newConfig)
     }
 
@@ -95,7 +84,6 @@ class XmppServiceConnectionConfig : XmppConnectionConfig {
     }
 
     override val disableCertificateVerification: Boolean by config {
-        "org.jitsi.jicofo.ALWAYS_TRUST_MODE_ENABLED".from(legacyConfig)
         "jicofo.xmpp.service.disable-certificate-verification".from(newConfig)
     }
 
@@ -104,22 +92,14 @@ class XmppServiceConnectionConfig : XmppConnectionConfig {
 
 class XmppClientConnectionConfig : XmppConnectionConfig {
     override val enabled: Boolean by config {
-        // If the legacy host is set to anything, the connection is enabled.
-        // The legacy name may be set as a system property in which case it the property is available via newConfig
-        legacyHostnamePropertyName.from(newConfig).convertFrom<String> { true }
-        legacyHostnamePropertyName.from(legacyConfig).convertFrom<String> { true }
         "jicofo.xmpp.client.enabled".from(newConfig)
     }
 
     override val hostname: String by config {
-        // The legacy name may be set as a system property in which case it the property is available via newConfig
-        legacyHostnamePropertyName.from(newConfig)
-        legacyHostnamePropertyName.from(legacyConfig)
         "jicofo.xmpp.client.hostname".from(newConfig)
     }
 
     override val port: Int by config {
-        "org.jitsi.jicofo.XMPP_PORT".from(legacyConfig)
         "jicofo.xmpp.client.port".from(newConfig)
     }
 
@@ -127,35 +107,18 @@ class XmppClientConnectionConfig : XmppConnectionConfig {
      * This is the domain used for login. Not necessarily the root XMPP domain.
      */
     override val domain: DomainBareJid by config {
-        // The legacy name may be set as a system property in which case it the property is available via newConfig
-        legacyDomainPropertyName.from(newConfig).convertFrom<String> {
-            JidCreate.domainBareFrom(it)
-        }
-        legacyDomainPropertyName.from(legacyConfig).convertFrom<String> {
-            JidCreate.domainBareFrom(it)
-        }
         "jicofo.xmpp.client.domain".from(newConfig).convertFrom<String> {
             JidCreate.domainBareFrom(it)
         }
     }
 
     override val username: Resourcepart by config {
-        // The legacy name may be set as a system property in which case it the property is available via newConfig
-        legacyUsernamePropertyName.from(newConfig).convertFrom<String> {
-            Resourcepart.from(it)
-        }
-        legacyUsernamePropertyName.from(legacyConfig).convertFrom<String> {
-            Resourcepart.from(it)
-        }
         "jicofo.xmpp.client.username".from(newConfig).convertFrom<String> {
             Resourcepart.from(it)
         }
     }
 
     override val password: String? by optionalconfig {
-        // The legacy name may be set as a system property in which case it the property is available via newConfig
-        legacyPasswordPropertyName.from(newConfig)
-        legacyPasswordPropertyName.from(legacyConfig)
         "jicofo.xmpp.client.password".from(newConfig)
     }
 
@@ -163,7 +126,6 @@ class XmppClientConnectionConfig : XmppConnectionConfig {
      * This is the top-level domain hosted by the XMPP server (not necessarily the one used for login).
      */
     val xmppDomain: DomainBareJid by config {
-        // The legacy name may be set as a system property in which case it the property is available via newConfig
         legacyXmppDomainPropertyName.from(newConfig).convertFrom<String> {
             JidCreate.domainBareFrom(it)
         }
@@ -173,9 +135,6 @@ class XmppClientConnectionConfig : XmppConnectionConfig {
     }
 
     val conferenceMucJid: DomainBareJid by config {
-        "org.jitsi.jicofo.XMPP_MUC_COMPONENT_PREFIX".from(legacyConfig).convertFrom<String> {
-            JidCreate.domainBareFrom("$it.$xmppDomain")
-        }
         "jicofo.xmpp.client.conference-muc-jid".from(newConfig).convertFrom<String> {
             JidCreate.domainBareFrom(it)
         }
@@ -187,7 +146,6 @@ class XmppClientConnectionConfig : XmppConnectionConfig {
     }
 
     override val disableCertificateVerification: Boolean by config {
-        "org.jitsi.jicofo.ALWAYS_TRUST_MODE_ENABLED".from(legacyConfig)
         "jicofo.xmpp.client.disable-certificate-verification".from(newConfig)
     }
 
